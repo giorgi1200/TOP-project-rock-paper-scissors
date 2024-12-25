@@ -1,95 +1,86 @@
-function getComputerChoice() {
-    let number = Math.random();
-    if (number < 0.33) {
-        return "rock";
-    } else if (number >= 0.33 && number <= 0.66) {
-        return "paper";
+let computerChoosed = ""
+
+function computerDecision(){
+    let randomNumber = Math.random()
+
+
+    if (randomNumber < 0.33){
+        computerChoosed = "rock"
+        document.getElementById("computer-choise").textContent = "🪨"
+    }  else if (randomNumber > 0.66){
+        computerChoosed = "paper"
+        document.getElementById("computer-choise").textContent = "📄"
     } else {
-        return "scissors";
+        computerChoosed = "scissors"
+        document.getElementById("computer-choise").textContent = "✂️"
+
     }
+    console.log(computerChoosed)
+
 }
 
-const buttons = document.querySelectorAll("#buttons button");
+const buttonPressed = document.querySelectorAll("#buttons button")
 
-const results = document.getElementById("result-message");
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("human-score-result").textContent = "0"
+    document.getElementById("computer-score-result").textContent = "0"
+})
 
-const computerChoosed = document.getElementById("computer-choise");
-
-const resetButton = document.getElementById("reset-button")
-
-let humanScoreResult = 0; // Store as integer
-let computerScoreResult = 0; // Store as integer
-
-// Update text content initially with 0
-document.getElementById("human-score-result").textContent = humanScoreResult;
-document.getElementById("computer-score-result").textContent = computerScoreResult;
-
-
-computerChoosed.textContent = "";
-
-humanScoreResult.textContent = 0;
-computerScoreResult.textContent = 0;
-
-buttons.forEach(button => {
-    button.addEventListener('click', () => {
-        const humanSelection = button.id.toLowerCase(); 
-        const computerSelection = getComputerChoice(); 
-        
-        playRound(humanSelection, computerSelection);
-        computerChoosedFunction(computerSelection);
-    });
+buttonPressed.forEach(button => {
+    button.addEventListener('click', function() {
+        computerDecision()
+        const playerChoise = button.id
+        playerDecision(button.id)
+        gameLogic(playerChoise, computerChoosed)
+});
 });
 
-function playRound(humanSelection, computerSelection) {
-    if (humanSelection === computerSelection) {
-        results.textContent = "It's a tie";
+
+function playerDecision(buttonPressed){
+    let playerPressed = ""
+    if (buttonPressed == "rock") {
+        playerPressed = "Player Choosed Rock"
+    } else if (buttonPressed == "paper") {
+        playerPressed = "player Choosed Paper"
+    } else if (buttonPressed == "scissors") {
+        playerPressed = "Player Choosed Scissors"
+    } else {
+        playerPressed = "Invalid Choice"
+    }
+    return playerPressed
+}
+
+
+let playerScore = 0
+let computerScore = 0 
+
+function gameLogic(playerChoise, computerChoosed) {
+    if (playerChoise == computerChoosed){
+        document.getElementById("result-message").textContent = "It's a tie"
     } else if (
-        (humanSelection === "rock" && computerSelection === "scissors") ||
-        (humanSelection === "paper" && computerSelection === "rock") ||
-        (humanSelection === "scissors" && computerSelection === "paper")
-    ) {
-        results.textContent = "You win this round!";
-        humanScoreResult += 1;
+        (playerChoise === "rock" && computerChoosed === "scissors") ||
+        (playerChoise === "paper" && computerChoosed === "rock") ||
+        (playerChoise === "scissors" && computerChoosed === "paper")
+    ){
+        document.getElementById("result-message").textContent = "You Win this round!"
+        playerScore += 1
+        document.getElementById("human-score-result").textContent = playerScore
     } else {
-        results.textContent = "Computer wins this round!";
-        computerScoreResult += 1;
+        document.getElementById("result-message").textContent = "Computer wins this round"
+
+        computerScore += 1
+        document.getElementById("computer-score-result").textContent = computerScore
     }
 
-    document.getElementById("human-score-result").textContent = humanScoreResult;
-    document.getElementById("computer-score-result").textContent = computerScoreResult;
-
-}
-
-function computerChoosedFunction(computerSelection) {
-    if (computerSelection === "rock") {
-        computerChoosed.textContent = "🪨";
-    } else if (computerSelection === "paper") {
-        computerChoosed.textContent = "📄";
-    } else {
-        computerChoosed.textContent = "✂️";
-    }
 }
 
 
-function scoreResults(){
-    if (results == "You win this round!"){
-        humanScoreResult += 1;
-    } else if (results == "Computer wins this round!") {
-        computerScoreResult += 1;
-    } else {
-        return
-    }
-}
-scoreResults()
+const refreshButton = document.getElementById("refresh-button");
 
-function resetGame(){
-    humanScoreResult = 0;
-    computerScoreResult = 0;
-    document.getElementById("human-score-result").textContent = humanScoreResult;
-    document.getElementById("computer-score-result").textContent = computerScoreResult;
-    results.textContent = "";
-    computerChoosed.textContent = "";
 
-}
+refreshButton.addEventListener('click', () => 
+{
+    document.getElementById("human-score-result").textContent = "0"
+    document.getElementById("computer-score-result").textContent = "0"
 
-resetButton.addEventListener("click", resetGame);
+})
