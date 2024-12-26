@@ -79,8 +79,10 @@ const refreshButton = document.getElementById("refresh-button");
 
 
 refreshButton.addEventListener('click', () => 
-{
-    document.getElementById("human-score-result").textContent = "0"
-    document.getElementById("computer-score-result").textContent = "0"
-
+{   
+     playerScore = 0;
+     computerScore = 0;
+    document.getElementById("human-score-result").textContent = 0;
+    document.getElementById("computer-score-result").textContent = 0;
+    document.getElementById("computer-choise").textContent = " ";
 })
